@@ -1,0 +1,46 @@
+{
+    "name": "chalcedonyt/laravel-redis-tagger",
+    "description": "A Helper function for Redis in Laravel to organize tags.",
+    "keywords": [
+        "redis",
+        "laravel",
+        "tagging"
+    ],
+    "homepage": "https://github.com/chalcedonyt/laravel-redis-tagger",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Timothy Teoh",
+            "email": "chalcedonyt@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "illuminate/support": "~5.1",
+        "php" : ">=5.3.0",
+        "predis/predis": "~1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit" : "4.*",
+        "scrutinizer/ocular": "~1.1",
+        "orchestra/testbench": "~3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Chalcedonyt\\RedisTagger\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Chalcedonyt\\RedisTagger\\Test\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "phpunit"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}
