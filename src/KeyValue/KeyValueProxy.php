@@ -2,6 +2,7 @@
 namespace Chalcedonyt\RedisTagger\KeyValue;
 
 use Chalcedonyt\RedisTagger\KeyValue\KeyValueFactory;
+
 use Redis;
 use Log;
 
@@ -40,6 +41,12 @@ class KeyValueProxy
     {
         $class = KeyValueFactory::create( $class, $key_args );
         return $class -> getKey();
+    }
+
+    public static function keys($class, $key_args)
+    {
+        $class = KeyValueFactory::create( $class, $key_args );
+        return $class -> getKeysForSearch();
     }
 }
 

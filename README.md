@@ -12,13 +12,13 @@ $ composer require chalcedonyt/laravel-redis-tagger
 
 Include the Provider and Facade into app.php. Right now this package only supports Key-Value, Sets will be supported in the future:
 
-```
+```php
 Chalcedonyt\RedisTagger\Providers\RedisTaggerServiceProvider::class
 ```
-```
+```php
 'RedisKVTagger' => Chalcedonyt\RedisTagger\Facades\RedisKVTagger::class
 ```
-## Usage
+## Usage - GET/SET
 
 ``` php
 php artisan redis_tagger:make:keyvalue UserPosts\\PostCount
@@ -28,7 +28,7 @@ The only thing you need to set is the `signatureKeys` value. You may insert eith
 
 Any {signature} keys must be defined when called.
 
-```
+```php
 class PostCount extends KeyValue
 {
     public function __construct(){
@@ -47,7 +47,7 @@ class PostCount extends KeyValue
 
 You may then call ::set or ::get on the `RedisKVTagger` Facade:
 
-```
+```php
 $post = new Post();
 $post -> id = 123
 $args = ['type' => 'article', 'post_id' => $post ];
@@ -55,13 +55,13 @@ RedisKVTagger::set('UserPosts\PostCount', $args, 1000); //sets the key "user_pos
 ```
 
 Likewise, you can retrieve the value with
-```
+```php
 RedisKVTagger::get('UserPosts\PostCount', $args);
 ```
 
 It is also possible to extend any KeyValue taggers you create by adding to the parent's $signatureKeys variable.
 
-```
+```php
 class PostCountToday extends PostCount
 {
     public function __construct(){
@@ -70,7 +70,7 @@ class PostCountToday extends PostCount
     }    
 }
 ```
-```
+```php
 class PostCountYesterday extends PostCount
 {
     public function __construct(){
@@ -84,6 +84,16 @@ class PostCountYesterday extends PostCount
 RedisKVTagger::set('UserPosts\PostCountToday', $args, 1000); //sets the key "user_posts:article:123:count:today" to 1000.
 RedisKVTagger::set('UserPosts\PostCountYesterday', $args, 1000); //sets the key "user_posts:article:123:count:yesterday" to 1000.
 ```
+
+## Usage - KEYS
+
+RedisTagger also wraps the `::keys` function of Redis. When calling `keys`, no validation is done on the arguments. Any missing {signature keys} will be cast to `*`:
+
+```
+$args = ['type' => 'a??'];
+RedisKVTagger::keys('UserPosts\PostCount', $args); //returns "user_posts:a??:*:count"
+```
+
 ## Change log
 
 Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.

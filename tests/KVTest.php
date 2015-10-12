@@ -23,7 +23,7 @@ class KVTest extends Orchestra\Testbench\TestCase
     protected function getEnvironmentSetUp($app)
     {
         // Setup default database to use sqlite :memory:
-        $app['config']->set('redis_tagger.base_path','');
+        $app['config']->set('redis_tagger.namespace','');
     }
 
     protected function getPackageProviders($app)
@@ -50,7 +50,8 @@ class KVTest extends Orchestra\Testbench\TestCase
         $this -> assertEquals( 'user_post_data:123:2', RedisKVTagger::getKey('BaseUserTagger', $args) );
     }
 
-    public function testMissingArgThrowsException(){
+
+    public function testThatAllParametersAreRequired(){
         $user = new User();
         $user -> id = 123;
         $user -> gender = 2;
@@ -79,6 +80,28 @@ class KVTest extends Orchestra\Testbench\TestCase
             'user' => $user,
             'gender' => $user ];
         $this -> assertEquals( 'user_post_data:123:2:posts', RedisKVTagger::getKey('UserPosts', $args) );
+    }
+
+    public function testKeySearch(){
+        $user = new User();
+        $user -> id = 123;
+        $user -> gender = 2;
+
+        $args = [
+            'user' => '*',
+            ];
+        $this -> assertEquals( 'user_post_data:*:*:posts', RedisKVTagger::keys('UserPosts', $args) );
+    }
+    
+    public function testWildCardKeySearch(){
+        $user = new User();
+        $user -> id = 123;
+        $user -> gender = 2;
+
+        $args = [
+            'user' => '12?',
+            ];
+        $this -> assertEquals( 'user_post_data:12?:*:posts', RedisKVTagger::keys('UserPosts', $args) );
     }
 
 
