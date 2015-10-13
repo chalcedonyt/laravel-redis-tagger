@@ -92,7 +92,7 @@ class KVTest extends Orchestra\Testbench\TestCase
             ];
         $this -> assertEquals( 'user_post_data:*:*:posts', RedisKVTagger::keys('UserPosts', $args) );
     }
-    
+
     public function testWildCardKeySearch(){
         $user = new User();
         $user -> id = 123;
@@ -102,6 +102,17 @@ class KVTest extends Orchestra\Testbench\TestCase
             'user' => '12?',
             ];
         $this -> assertEquals( 'user_post_data:12?:*:posts', RedisKVTagger::keys('UserPosts', $args) );
+    }
+
+    public function testGettingTagValue(){
+
+        $key = 'user_post_data:123:2:posts';
+
+        $user = new User();
+        $user -> id = 123;
+        $user -> gender = 2;
+
+        $this -> assertEquals( '2', RedisKVTagger::valueOfTagInKey('BaseUserTagger', $key, 'gender') );
     }
 
 

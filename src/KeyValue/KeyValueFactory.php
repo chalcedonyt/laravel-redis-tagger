@@ -1,37 +1,23 @@
 <?php
 namespace Chalcedonyt\RedisTagger\KeyValue;
 
-/**
- *
- */
-use Config;
+use Chalcedonyt\RedisTagger\TaggerFactory;
 
-class KeyValueFactory
+class KeyValueFactory extends TaggerFactory
 {
     /**
      * @todo this should be in a config file
      */
-    const BASE_PATH = 'KeyValue' ;
+    const BASE_PATH = 'KeyValue';
 
     /**
-     * Creates a new instance of a Redis key value tag and initializes it
+     * Creates a new instance of a RedisTagger\KeyValue and initializes it
      * @param String $class The classname relative to BASE_PATH
-     * @param Array $key_values The values for the signature keys.
-     * @param mixed $value The value to set
+     * @param Array $key_values The values for the tag keys.
      * @return an instance of $class with the initialized values
      */
-    public static function create($class, $key_values){
-        $base_path = Config::get('redis_tagger.namespace').'\\'.static::BASE_PATH;
-
-        $class = new \ReflectionClass($base_path.'\\'.$class);
-        $key_value_tagger = $class -> newInstance();
-
-        //Uses the magic __set on KeyValue
-        foreach( $key_values as $key => $value )
-        {
-            $key_value_tagger -> $key = $value;
-        }
-        return $key_value_tagger;
+    public static function create($class, $key_values = []){
+        return TaggerFactory::createTagger(static::BASE_PATH, $class, $key_values );
     }
 }
 

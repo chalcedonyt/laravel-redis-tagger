@@ -3,7 +3,7 @@
 namespace {{$namespace}};
 
 use Chalcedonyt\RedisTagger\KeyValue\KeyValue;
-
+use Chalcedonyt\RedisTagger\TaggerInterface;
 
 class {{$classname}} extends KeyValue
 {
@@ -12,7 +12,7 @@ class {{$classname}} extends KeyValue
      */
     public function __construct(){
         parent::__construct();
-        $this -> signatureKeys = [
+        $this -> tags = [
             'label',
             '{id}'
         ];

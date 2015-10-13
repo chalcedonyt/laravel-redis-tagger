@@ -24,16 +24,16 @@ Chalcedonyt\RedisTagger\Providers\RedisTaggerServiceProvider::class
 php artisan redis_tagger:make:keyvalue UserPosts\\PostCount
 ```
 
-The only thing you need to set is the `signatureKeys` value. You may insert either a plain string, a {signature}, or a {placeholder} with a \Closure that returns a value. (This allows type-hinting).
+The only thing you need to set is the `tags` value. You may insert either a plain string, a {tagtemplate}, or a {tagtemplate} with a \Closure that returns a value. (This allows type-hinting).
 
-Any {signature} keys must be defined when called.
+Any {tagtemplate} keys must be defined when called.
 
 ```php
 class PostCount extends KeyValue
 {
     public function __construct(){
         parent::__construct();
-        $this -> signatureKeys = [
+        $this -> tags = [
             'user_posts',
             '{type}',
             '{post_id}' => function( Post $post ){
@@ -59,14 +59,14 @@ Likewise, you can retrieve the value with
 RedisKVTagger::get('UserPosts\PostCount', $args);
 ```
 
-It is also possible to extend any KeyValue taggers you create by adding to the parent's $signatureKeys variable.
+It is also possible to extend any KeyValue taggers you create by adding to the parent's $tags variable.
 
 ```php
 class PostCountToday extends PostCount
 {
     public function __construct(){
         parent::__construct();
-        $this -> signatureKeys[]= 'today';
+        $this -> tags[]= 'today';
     }    
 }
 ```
@@ -75,7 +75,7 @@ class PostCountYesterday extends PostCount
 {
     public function __construct(){
         parent::__construct();
-        $this -> signatureKeys[]= 'yesterday';
+        $this -> tags[]= 'yesterday';
     }    
 }
 ```
@@ -87,11 +87,20 @@ RedisKVTagger::set('UserPosts\PostCountYesterday', $args, 1000); //sets the key 
 
 ## Usage - KEYS
 
-RedisTagger also wraps the `::keys` function of Redis. When calling `keys`, no validation is done on the arguments. Any missing {signature keys} will be cast to `*`:
+RedisTagger also wraps the `::keys` function of Redis. When calling `keys`, no validation is done on the arguments. Any missing {tagtemplates} will be cast to `*`:
 
-```
+```php
 $args = ['type' => 'a??'];
 RedisKVTagger::keys('UserPosts\PostCount', $args); //returns "user_posts:a??:*:count"
+```
+
+## Usage - Extracting tag values
+
+You may extract the value of a {tag} from a key by using the ::valueOfTagInKey function.
+```php
+$key = "user_posts:article:123:count:yesterday";
+
+RedisKVTagger::valueOfTagInKey('UserPosts\PostCount', $key, 'post_id'); //returns "123"
 ```
 
 ## Change log
