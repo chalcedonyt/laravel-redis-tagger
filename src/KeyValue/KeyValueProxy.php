@@ -56,7 +56,8 @@ class KeyValueProxy
     public static function keys($class, $key_args)
     {
         $instance = KeyValueFactory::create( $class, $key_args );
-        return $instance -> getKeysForSearch();
+        $search_string = $instance -> getKeysForSearch();
+        return Redis::keys( $search_string );
     }
 
     /**

@@ -90,7 +90,7 @@ class KVTest extends Orchestra\Testbench\TestCase
         $args = [
             'user' => '*',
             ];
-        $this -> assertEquals( 'user_post_data:*:*:posts', RedisKVTagger::keys('UserPosts', $args) );
+        $this -> assertEquals( 'user_post_data:*:*:posts', RedisKVTagger::getKey('UserPosts', $args) );
     }
 
     public function testWildCardKeySearch(){
@@ -101,7 +101,7 @@ class KVTest extends Orchestra\Testbench\TestCase
         $args = [
             'user' => '12?',
             ];
-        $this -> assertEquals( 'user_post_data:12?:*:posts', RedisKVTagger::keys('UserPosts', $args) );
+        $this -> assertEquals( 'user_post_data:12?:*:posts', RedisKVTagger::getKey('UserPosts', $args) );
     }
 
     public function testGettingTagValue(){
