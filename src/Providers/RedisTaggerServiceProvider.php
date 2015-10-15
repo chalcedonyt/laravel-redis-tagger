@@ -2,7 +2,7 @@
 namespace Chalcedonyt\RedisTagger\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Chalcedonyt\RedisTagger\Commands\KVGeneratorCommand;
+use Chalcedonyt\RedisTagger\Commands\TaggerGeneratorCommand;
 
 class RedisTaggerServiceProvider extends ServiceProvider
 {
@@ -28,20 +28,20 @@ class RedisTaggerServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this -> app -> bind('RedisKVTagger', function(){
-            return new \Chalcedonyt\RedisTagger\KeyValue\KeyValueProxy;
+        $this -> app -> bind('RedisTagger', function(){
+            return new \Chalcedonyt\RedisTagger\TaggerProxy;
         });
 
         $source_config = __DIR__ . '/../config/redis_tagger.php';
         $this->mergeConfigFrom($source_config, 'redis_tagger');
 
         //commands to generate a kv tag
-        $this->app['command.redis_tagger.kv_generate'] = $this->app->share(
+        $this->app['command.redis_tagger.generate'] = $this->app->share(
             function ($app) {
-                return new KVGeneratorCommand($app['config'], $app['view'], $app['files']);
+                return new TaggerGeneratorCommand($app['config'], $app['view'], $app['files']);
             }
         );
-        $this->commands('command.redis_tagger.kv_generate');
+        $this->commands('command.redis_tagger.generate');
     }
     /**
      * Get the services provided by the provider.
@@ -50,6 +50,6 @@ class RedisTaggerServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return ['command.redis_tagger.kv_generate',];
+        return ['command.redis_tagger.generate',];
     }
 }
