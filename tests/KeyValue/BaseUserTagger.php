@@ -2,12 +2,12 @@
 namespace KeyValue;
 
 use Models\User;
-use Chalcedonyt\RedisTagger\KeyValue\KeyValue;
+use Chalcedonyt\RedisTagger\Tagger;
 use Chalcedonyt\RedisTagger\TaggerInterface;
 /**
  *
  */
-class BaseUserTagger extends KeyValue implements TaggerInterface
+class BaseUserTagger extends Tagger implements TaggerInterface
 {
 
     public function __construct(){
