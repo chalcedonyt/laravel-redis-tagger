@@ -2,7 +2,7 @@
 namespace KeyValue;
 
 use Models\User;
-use Chalcedonyt\RedisTagger\KeyValue\KeyValue;
+use Chalcedonyt\RedisTagger\Tagger;
 /**
  *
  */

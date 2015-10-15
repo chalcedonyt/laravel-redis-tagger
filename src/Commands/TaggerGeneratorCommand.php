@@ -12,21 +12,21 @@ use Symfony\Component\Console\Input\InputOption;
  *
  * @package Chalcedony\RedisTagger\Commands
  */
-class KVGeneratorCommand extends Command
+class TaggerGeneratorCommand extends Command
 {
     /**
      * The console command name.
      *
      * @var string
      */
-    protected $signature = 'make:redis_tagger:keyvalue {classname}';
+    protected $signature = 'make:redis_tagger {classname}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create a new Redis key-value tagger';
+    protected $description = 'Create a new Redis tagger';
     /**
      * @var
      */
@@ -75,14 +75,14 @@ class KVGeneratorCommand extends Command
             //retrieves store directory configuration
             if( strpos($classname, '\\') !== false ){
                 $class_dirs = substr($classname, 0, strrpos( $classname, '\\'));
-                $directory = $this->appPath($this->config->get('redis_tagger.base_path')).DIRECTORY_SEPARATOR.'KeyValue'.DIRECTORY_SEPARATOR.str_replace('\\', DIRECTORY_SEPARATOR, $class_dirs);
-                $namespace = $this->config->get('redis_tagger.namespace').'\\KeyValue\\'.$class_dirs;
+                $directory = $this->appPath($this->config->get('redis_tagger.base_path')).DIRECTORY_SEPARATOR.str_replace('\\', DIRECTORY_SEPARATOR, $class_dirs);
+                $namespace = $this->config->get('redis_tagger.namespace').'\\'.$class_dirs;
                 $classname = substr($classname, strrpos($classname, '\\') + 1);
             }
             else {
-                $directory = $this->appPath($this->config->get('redis_tagger.base_path')).DIRECTORY_SEPARATOR.'KeyValue';
+                $directory = $this->appPath($this->config->get('redis_tagger.base_path'));
                 //retrieves namespace configuration
-                $namespace = $this->config->get('redis_tagger.namespace').'\\KeyValue';
+                $namespace = $this->config->get('redis_tagger.namespace');
             }
 
 
@@ -118,7 +118,7 @@ class KVGeneratorCommand extends Command
                 'classname' => $classname ];
 
             // loading template from views
-            $view = $this->view->make('redis_tagger::keyvalue',$args);
+            $view = $this->view->make('redis_tagger::tagger',$args);
 
 
             if ($create) {

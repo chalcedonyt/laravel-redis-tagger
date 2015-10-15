@@ -2,10 +2,10 @@
 
 namespace {{$namespace}};
 
-use Chalcedonyt\RedisTagger\KeyValue\KeyValue;
+use Chalcedonyt\RedisTagger\Tagger;
 use Chalcedonyt\RedisTagger\TaggerInterface;
 
-class {{$classname}} extends KeyValue
+class {{$classname}} extends Tagger
 {
     /**
     * label:{id}

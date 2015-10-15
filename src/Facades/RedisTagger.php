@@ -2,9 +2,9 @@
 namespace Chalcedonyt\RedisTagger\Facades;
 use Illuminate\Support\Facades\Facade;
 
-class RedisKVTagger extends Facade{
+class RedisTagger extends Facade{
     protected static function getFacadeAccessor() {
-        return 'RedisKVTagger';
+        return 'RedisTagger';
     }
 }
 ?>
