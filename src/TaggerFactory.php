@@ -14,10 +14,13 @@ class TaggerFactory
      * @param Array $key_values The values for the tag keys.
      * @return an instance of $class with the initialized values
      */
-    public static function create($class, $key_values = []){
-        $path = Config::get('redis_tagger.namespace');
+    public static function create($class_path, $key_values = []){
+        if( strpos($class_path, 'App') === 0){
+            $path = $class_path;
+        }
+        else $path = Config::get('redis_tagger.namespace').$class_path;
 
-        $class = new \ReflectionClass($path.'\\'.$class);
+        $class = new \ReflectionClass($path);
         $instance = $class -> newInstance();
 
         //Uses the magic __set on KeyValue
