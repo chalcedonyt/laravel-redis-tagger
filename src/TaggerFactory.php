@@ -18,7 +18,7 @@ class TaggerFactory
         if( strpos($class_path, 'App') === 0){
             $path = $class_path;
         }
-        else $path = Config::get('redis_tagger.namespace').$class_path;
+        else $path = Config::get('redis_tagger.namespace').'\\'.$class_path;
 
         $class = new \ReflectionClass($path);
         $instance = $class -> newInstance();
