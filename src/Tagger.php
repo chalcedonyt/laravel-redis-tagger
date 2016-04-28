@@ -234,6 +234,12 @@ abstract class Tagger implements TaggerInterface
             return false;
         }
     }
+    /**
+     * @return Array
+     */
+    public function getTagValues(){
+        return $this -> tagValues;
+    }
 }
 
 
